@@ -1,1 +1,2 @@
-sudo apt-get install bless build-essential libssl-dev python-is-python3 wireguard resolvconf Wireshark GNURadio Tailscale
+sudo apt-get install bless build-essential libssl-dev python-is-python3 wireguard resolvconf wireshark gnuradio
+curl -fsSl https://tailscale.com/install.sh | sh
