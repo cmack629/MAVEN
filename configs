@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# Sample list of users: Firstname Lastname (one per line)
+users=(
+  "Alice Smith"
+  "Bob Johnson"
+  "Charlie Brown"
+)
+
+# Optional: group name (e.g. sftpusers)
+group="sftpusers"
+
+for full_name in "${users[@]}"; do
+  first=$(echo "$full_name" | awk '{print $1}' | tr '[:upper:]' '[:lower:]')
+  last=$(echo "$full_name" | awk '{print $2}')
+  last_lower=$(echo "$last" | tr '[:upper:]' '[:lower:]')
+  last_cap=$(echo "$last" | sed 's/.*/\u&/')  # Capitalize
+
+  username="${first}.${last_lower}"
+  password="${last_cap}123!"
+
+  echo "Creating user: $username with password: $password"
+
+  # Create user with no shell (SFTP-only)
+  sudo useradd -m -s /sbin/nologin "$username"
+
+  # Set password
+  echo "${username}:${password}" | sudo chpasswd
+
+  # Add to group (optional)
+  sudo usermod -aG "$group" "$username"
+
+  # Optional: Lock to /files directory
+  sudo mkdir -p /home/"$username"/files
+  sudo chown "$username":"$username" /home/"$username"/files
+  sudo chown root:root /home/"$username"
+  sudo chmod 755 /home/"$username"
+done
