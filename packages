@@ -1,2 +1,3 @@
 sudo apt-get install bless build-essential libssl-dev python-is-python3 wireguard resolvconf wireshark gnuradio virtualbox
 curl -fsSl https://tailscale.com/install.sh | sh
+sudo wg-quick up /Pathto/myvpn
